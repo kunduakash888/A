@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Romantic Sorry Card ❤️</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#ff758c,#ff7eb3);
+    overflow:hidden;
+}
+
+/* Floating Hearts Background */
+body::before{
+    content:"❤️ ❤️ ❤️ ❤️ ❤️ ❤️";
+    position:absolute;
+    top:-10%;
+    width:100%;
+    font-size:2rem;
+    animation:fall 10s linear infinite;
+    opacity:0.7;
+}
+
+@keyframes fall{
+    0%{ transform:translateY(-100px); }
+    100%{ transform:translateY(120vh); }
+}
+
+.wrapper{
+    perspective:1200px;
+}
+
+.card{
+    width:700px;
+    height:420px;
+    position:relative;
+    transform-style:preserve-3d;
+    transition:1.5s;
+    cursor:pointer;
+}
+
+.card.open{
+    transform:rotateY(-180deg);
+}
+
+/* Front & Inside */
+.outside,
+.inside{
+    width:100%;
+    height:100%;
+    position:absolute;
+    border-radius:20px;
+    overflow:hidden;
+    backface-visibility:hidden;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+
+.outside{
+    background:white;
+}
+
+.card.open .outside{
+    transform:rotateY(-180deg);
+}
+
+/* Front */
+.front{
+    width:100%;
+    height:100%;
+    background:linear-gradient(135deg,#ff4d6d,#ff758f);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    color:white;
+}
+
+.front h1{ font-size:3rem; margin-bottom:15px; }
+.front p{ font-size:1.2rem; }
+
+/* Inside */
+.inside{
+    background:white;
+    transform:rotateY(180deg);
+    display:flex;
+}
+
+/* Left */
+.left{
+    width:50%;
+    padding:30px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+}
+
+.left h2{
+    color:#ff4d6d;
+    font-size:2.3rem;
+    margin-bottom:20px;
+}
+
+.left p{
+    color:#555;
+    line-height:1.8;
+    font-size:1rem;
+    margin-bottom:25px;
+}
+
+button{
+    padding:12px 25px;
+    border:none;
+    border-radius:30px;
+    background:linear-gradient(45deg,#ff4d6d,#ff758f);
+    color:white;
+    cursor:pointer;
+    font-size:1rem;
+    transition:0.4s;
+}
+
+button:hover{
+    transform:scale(1.1);
+}
+
+/* Right */
+.right{
+    width:50%;
+}
+
+.right img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* Popup */
+.love-popup{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%) scale(0);
+    background:white;
+    padding:25px 35px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    transition:0.5s;
+    z-index:999;
+}
+
+.love-popup.show{
+    transform:translate(-50%,-50%) scale(1);
+}
+
+/* Floating Hearts */
+.floating-heart{
+    position:absolute;
+    bottom:-50px;
+    animation:floatUp linear forwards;
+}
+
+@keyframes floatUp{
+    0%{ transform:translateY(0) scale(0); opacity:0; }
+    50%{ opacity:1; }
+    100%{ transform:translateY(-100vh) scale(1.5); opacity:0; }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+    <div class="card" onclick="openCard()">
+
+        <!-- FRONT -->
+        <div class="outside">
+            <div class="front">
+                <h1>For Ankita ❤️</h1>
+                <p>Click To Open 💌</p>
+            </div>
+        </div>
+
+        <!-- INSIDE -->
+        <div class="inside">
+
+            <div class="left">
+
+                <h2>I'm Sorry 🥺</h2>
+
+                <p>
+                    আমার প্রিয় Ankita ❤️ <br><br>
+                    আমি সত্যিই sorry তোমাকে কষ্ট দেওয়ার জন্য।<br>
+                    তুমি আমার জীবনের সবচেয়ে special মানুষ।<br>
+                    Please আর রাগ করে থেকো না 🥺
+                </p>
+
+                <button onclick="playMusic(event)">
+                    Forgive Me 💌
+                </button>
+
+            </div>
+
+            <div class="right">
+                <img src="image.png" alt="image">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- AUDIO -->
+<audio id="music" loop>
+    <source src="_Main_To_Tere_Rang_Me_Ringtone_(by Fringster.com).mp3" type="audio/mp3">
+</audio>
+
+<script>
+
+function openCard(){
+
+    const card = document.querySelector(".card");
+    const music = document.getElementById("music");
+
+    card.classList.toggle("open");
+
+    if(card.classList.contains("open")){
+        createHearts();
+
+        music.play().catch(err=>{
+            console.log("Autoplay blocked:", err);
+        });
+    } else {
+        music.pause();
+        music.currentTime = 0;
+    }
+}
+
+function playMusic(event){
+
+    event.stopPropagation();
+
+    const music = document.getElementById("music");
+    music.play();
+
+    const popup = document.createElement("div");
+    popup.className = "love-popup";
+
+    popup.innerHTML = `
+        <h2>❤️ I Love You ❤️</h2>
+        <p>No matter what happens, I will always love you ❤️</p>
+    `;
+
+    document.body.appendChild(popup);
+
+    setTimeout(()=> popup.classList.add("show"), 100);
+
+    setTimeout(()=>{
+        popup.classList.remove("show");
+        setTimeout(()=> popup.remove(), 500);
+    }, 4000);
+}
+
+/* Hearts */
+function createHearts(){
+
+    for(let i=0;i<30;i++){
+
+        let heart = document.createElement("span");
+        heart.innerHTML = "❤️";
+        heart.classList.add("floating-heart");
+
+        heart.style.left = Math.random()*100 + "vw";
+        heart.style.fontSize = (Math.random()*25+15) + "px";
+        heart.style.animationDuration = (Math.random()*4+3) + "s";
+
+        document.body.appendChild(heart);
+
+        setTimeout(()=> heart.remove(), 7000);
+    }
+}
+
+</script>
+
+</body>
+</html>
